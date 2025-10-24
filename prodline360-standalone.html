@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProdLine360 - Sistema Completo de Controle de Produção Industrial</title>
+    <meta name="description" content="Controle total da sua produção por apenas R$850,00. Dashboard interativo, controle de metas, registro de produção e alertas automáticos. Sistema online para indústrias.">
+    <meta name="author" content="João Layon - Desenvolvedor Fullstack">
+    <meta name="keywords" content="controle de produção, sistema industrial, OEE, dashboard, produtividade industrial, gestão de fábrica">
+    
+    <meta property="og:title" content="ProdLine360 - Sistema Completo de Controle de Produção Industrial">
+    <meta property="og:description" content="Controle total da sua produção por apenas R$850,00. Dashboard interativo, controle de metas e alertas automáticos.">
+    <meta property="og:type" content="website">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2d3748;
+            --primary-light: #4a5568;
+            --accent: #f6c344;
+            --accent-dark: #e6b334;
+            --bg-light: #f7fafc;
+            --bg-white: #ffffff;
+            --text-dark: #1a202c;
+            --text-muted: #718096;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--bg-white);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 4rem 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(255,255,255,.05) 59px, rgba(255,255,255,.05) 60px);
+            opacity: 0.4;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--text-dark);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        h1 .highlight {
+            color: var(--accent);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--text-dark);
+            box-shadow: 0 4px 12px rgba(246, 195, 68, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(246, 195, 68, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .hero-footer {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 4rem 1rem;
+        }
+
+        .section-alt {
+            background: var(--bg-light);
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .section-header p {
+            font-size: 1.125rem;
+            color: var(--text-muted);
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: var(--bg-white);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            transform: translateY(-4px);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--accent);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Process Cards */
+        .process-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .process-card {
+            background: var(--bg-white);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        .process-number {
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .process-badge {
+            display: inline-block;
+            background: var(--bg-light);
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .checklist {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .checklist li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .checklist li::before {
+            content: "✓";
+            color: var(--accent);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .stat-card {
+            background: var(--bg-white);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Testimonials */
+        .testimonial-card {
+            background: var(--bg-white);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-avatar {
+            width: 48px;
+            height: 48px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .testimonial-name {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .testimonial-role {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .testimonial-text {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Pricing Card */
+        .pricing-card {
+            background: linear-gradient(135deg, var(--bg-white) 0%, var(--bg-light) 100%);
+            border: 4px solid var(--accent);
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .pricing-badge {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--text-dark);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .price {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin: 1.5rem 0 0.5rem;
+        }
+
+        .price-note {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .features-box {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .features-box h3 {
+            font-size: 1.125rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .features-list {
+            list-style: none;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .features-list li {
+            padding: 0.75rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        .features-list li::before {
+            content: "✓";
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        /* Developer Card */
+        .developer-card {
+            background: var(--bg-white);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 3rem 2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .developer-avatar {
+            width: 80px;
+            height: 80px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 2rem;
+            margin: 0 auto 1.5rem;
+            color: var(--text-dark);
+        }
+
+        .developer-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .developer-title {
+            color: var(--text-muted);
+            font-size: 1.125rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .developer-bio {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        /* Final CTA */
+        .final-cta {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 4rem 1rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .final-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(255,255,255,.05) 59px, rgba(255,255,255,.05) 60px);
+            opacity: 0.4;
+        }
+
+        .final-cta-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .final-cta-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .final-cta h2 {
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .final-cta p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .final-cta-note {
+            font-size: 0.875rem;
+            margin-top: 1.5rem;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-light);
+            color: rgba(255, 255, 255, 0.9);
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.75rem;
+            }
+
+            .hero p {
+                font-size: 1.125rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .cards-grid,
+            .process-cards,
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .price {
+                font-size: 2.5rem;
+            }
+
+            section {
+                padding: 3rem 1rem;
+            }
+        }
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-content">
+            <span class="badge">Sistema Industrial Completo</span>
+            <h1>Controle Total da Sua Produção com <span class="highlight">ProdLine360</span></h1>
+            <p>Sistema completo de controle de produção hora a hora. Dashboard interativo, alertas automáticos e relatórios em um clique.</p>
+            <div class="cta-buttons">
+                <a href="#preco" class="btn btn-primary">Solicitar Demonstração</a>
+                <a href="#funcionalidades" class="btn btn-secondary">Ver Funcionalidades</a>
+            </div>
+            <p class="hero-footer">⚡ Totalmente online • 📱 Acesso por desktop, tablet e celular</p>
+        </div>
+    </header>
+
+    <!-- Apresentação do Sistema -->
+    <section id="funcionalidades">
+        <div class="container">
+            <div class="section-header">
+                <h2>Por que escolher o ProdLine360?</h2>
+                <p>Tenha o controle completo da sua produção com tecnologia de ponta</p>
+            </div>
+
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">📊</div>
+                    <h3>Dashboard Interativo</h3>
+                    <p>Visualização no estilo Power BI com dados em tempo real</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">👥</div>
+                    <h3>3 Perfis de Usuário</h3>
+                    <p>Gestor, Encarregado e Operador com permissões específicas</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🎯</div>
+                    <h3>Controle de Metas</h3>
+                    <p>Defina e acompanhe metas de produção hora a hora</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">📈</div>
+                    <h3>Eficiência OEE</h3>
+                    <p>Cálculo automático de eficiência global dos equipamentos</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🔔</div>
+                    <h3>Alertas Automáticos</h3>
+                    <p>Notificações inteligentes de desempenho e desvios</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">📄</div>
+                    <h3>Relatórios Instantâneos</h3>
+                    <p>Gere relatórios completos em um clique</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Como Funciona -->
+    <section class="section-alt">
+        <div class="container">
+            <div class="section-header">
+                <h2>Como Funciona o ProdLine360</h2>
+                <p>Fluxo simples e eficiente para toda a equipe</p>
+            </div>
+
+            <div class="process-cards">
+                <div class="process-card">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div class="process-number">1</div>
+                        <span class="process-badge">Gestor</span>
+                    </div>
+                    <h3>Planejamento Estratégico</h3>
+                    <ul class="checklist">
+                        <li>Define metas de produção</li>
+                        <li>Monitora KPIs em tempo real</li>
+                        <li>Analisa relatórios gerenciais</li>
+                        <li>Toma decisões baseadas em dados</li>
+                    </ul>
+                </div>
+
+                <div class="process-card">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div class="process-number">2</div>
+                        <span class="process-badge">Encarregado</span>
+                    </div>
+                    <h3>Supervisão Tática</h3>
+                    <ul class="checklist">
+                        <li>Acompanha produção hora a hora</li>
+                        <li>Registra paradas e refugos</li>
+                        <li>Recebe alertas de desvios</li>
+                        <li>Valida registros operacionais</li>
+                    </ul>
+                </div>
+
+                <div class="process-card">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div class="process-number">3</div>
+                        <span class="process-badge">Operador</span>
+                    </div>
+                    <h3>Execução Operacional</h3>
+                    <ul class="checklist">
+                        <li>Lança produção realizada</li>
+                        <li>Registra peças refugadas</li>
+                        <li>Informa paradas de máquina</li>
+                        <li>Visualiza metas do turno</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefícios -->
+    <section>
+        <div class="container">
+            <div class="section-header">
+                <h2>Resultados Práticos para Sua Indústria</h2>
+                <p>Transforme dados em resultados reais</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📈</div>
+                    <div class="stat-value">+25%</div>
+                    <div class="stat-label">Aumento de Produtividade</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-value">-40%</div>
+                    <div class="stat-label">Redução de Refugos</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-value">-30%</div>
+                    <div class="stat-label">Menos Tempo Parado</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">⚙️</div>
+                    <div class="stat-value">100%</div>
+                    <div class="stat-label">Controle em Tempo Real</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Depoimentos -->
+    <section class="section-alt">
+        <div class="container">
+            <div class="section-header">
+                <h2>O que nossos clientes dizem</h2>
+            </div>
+
+            <div class="cards-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">MR</div>
+                        <div>
+                            <div class="testimonial-name">Marcos Roberto</div>
+                            <div class="testimonial-role">Gerente Industrial</div>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"Conseguimos reduzir 35% das paradas não programadas. O dashboard facilita muito a tomada de decisão rápida."</p>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">AS</div>
+                        <div>
+                            <div class="testimonial-name">Ana Silva</div>
+                            <div class="testimonial-role">Encarregada de Produção</div>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"Sistema intuitivo e prático. Os operadores se adaptaram rapidamente e agora temos controle total do chão de fábrica."</p>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">PC</div>
+                        <div>
+                            <div class="testimonial-name">Paulo Costa</div>
+                            <div class="testimonial-role">Diretor de Operações</div>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"O melhor investimento que fizemos. ROI em menos de 3 meses com a redução de perdas e aumento de eficiência."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Preço -->
+    <section id="preco">
+        <div class="container">
+            <div class="pricing-card">
+                <div style="text-align: center;">
+                    <span class="pricing-badge">Oferta Especial</span>
+                    <h2 style="margin-top: 1rem;">Licença Completa do ProdLine360</h2>
+                    <p style="color: var(--text-muted); font-size: 1.125rem; margin-top: 0.5rem;">Tudo que você precisa para controlar sua produção</p>
+                    
+                    <div class="price">R$ 850,00</div>
+                    <p class="price-note">Licença completa • Sem mensalidades</p>
+                </div>
+
+                <div class="features-box">
+                    <h3>O que está incluído:</h3>
+                    <ul class="features-list">
+                        <li>Sistema completo com todos os módulos</li>
+                        <li>3 perfis de usuário (Gestor, Encarregado, Operador)</li>
+                        <li>Dashboard interativo estilo Power BI</li>
+                        <li>Alertas automáticos e relatórios</li>
+                        <li>Acesso ilimitado via desktop, tablet e celular</li>
+                        <li>Suporte técnico e atualizações</li>
+                    </ul>
+                </div>
+
+                <div style="text-align: center;">
+                    <a href="https://dujao22.github.io/Apresentacao_Solucoes_Digitais-/" target="_blank" class="btn btn-primary" style="font-size: 1.125rem; padding: 1rem 2.5rem;">
+                        Adquirir Agora
+                    </a>
+                    <p style="font-size: 0.875rem; color: var(--text-muted); margin-top: 1rem;">
+                        💳 Pagamento único • 🔒 Compra segura • ⚡ Ativação imediata
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sobre o Desenvolvedor -->
+    <section class="section-alt">
+        <div class="container">
+            <div class="developer-card">
+                <div class="developer-avatar">JL</div>
+                <div class="developer-name">João Layon</div>
+                <div class="developer-title">Desenvolvedor Fullstack</div>
+                <p class="developer-bio">
+                    Especialista em desenvolvimento de soluções digitais para indústrias, com foco em sistemas que geram resultados reais para o chão de fábrica.
+                </p>
+                <a href="https://dujao22.github.io/Apresentacao_Solucoes_Digitais-/" target="_blank" class="btn btn-secondary">
+                    🏆 Ver Portfólio Completo
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Final -->
+    <section class="final-cta">
+        <div class="final-cta-content">
+            <div class="final-cta-icon">🏭</div>
+            <h2>Aumente sua eficiência industrial agora mesmo</h2>
+            <p>Garanta agora o controle total da sua produção por apenas R$850,00!</p>
+            <a href="https://dujao22.github.io/Apresentacao_Solucoes_Digitais-/" target="_blank" class="btn btn-primary" style="font-size: 1.125rem; padding: 1rem 2.5rem;">
+                Solicitar Demonstração Gratuita
+            </a>
+            <p class="final-cta-note">
+                ✅ Sem compromisso • 📞 Atendimento personalizado • 🚀 Implementação rápida
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>
+                © 2025 ProdLine360 - Sistema desenvolvido por 
+                <a href="https://dujao22.github.io/Apresentacao_Solucoes_Digitais-/" target="_blank">João Layon - Desenvolvedor Fullstack</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll para links âncora
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Animação de entrada dos cards
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '0';
+                    entry.target.style.transform = 'translateY(20px)';
+                    entry.target.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, 100);
+                    
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Observar cards para animação
+        document.querySelectorAll('.card, .process-card, .stat-card, .testimonial-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
